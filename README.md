@@ -1,103 +1,146 @@
-# Health and Fitness Tracker
+<div align="center">
 
-🌟 Comprehensive web and mobile application to monitor and improve health and fitness 🌟
+<img src="src/Logos/fitzen-logo.jpg" alt="FitZen logo" width="120">
 
-![Health and Fitness Tracker Logo](src/Logos/fitzen-logo.jpg)
+# 💪 FitZen · Aura Hackfest Edition
 
-# Walkthrough - https://youtu.be/HgBd2bfBc9U
-# Presentation Deck - (./BroCode_AuraHackfest.pdf)
+### Your AI workout buddy, nutritionist and wellness coach in one app.
 
-## Overview
+The final Aura Hackfest version of FitZen by team **BroCode**: webcam rep counting, LLM meal plans and a mental health chatbot, served from a single combined backend.
 
-Health and Fitness Tracker is your all-in-one solution for a healthier lifestyle. This project integrates machine learning algorithms to provide features for fitness tracking, nutrition planning, and mental well-being.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
-## Features
+</div>
 
-- 🏋‍♂ **AI Exercise Buddy:** Your virtual fitness companion for guided exercises and workouts.
-- 🧘 **Yoga Pose Detection:** Real-time feedback on yoga poses for improved practice.
-- 🧠 **Mental Health Chatbot:** Personalized support for mental well-being through natural language processing.
-- 🍏 **Diet Plan Generator:** Tailored diet plans based on individual health goals and preferences.
-- 💪 **Workout Plan Generator:** Personalized workout plans adaptable to your progress.
-- 📊 **Dashboard with KPIs:** Monitor your progress through an intuitive dashboard.
-- 🎉 **Reward System:** Stay motivated with rewards for achieving fitness milestones.
-- 📱 **Mobile App Food Scanner:** Scan food items for instant calorie and nutritional information.
-- 🍽 **Nutrient Information:** Detailed breakdown of nutrients in each food item.
-- 🌈 **Live Therapy Sessions:** Access live therapy sessions for mental health support.
+---
 
-## Getting Started
+## 💡 The problem
 
-### Prerequisites
+Staying healthy usually means juggling a fitness app, a diet app and, if you can afford it, a trainer and a therapist. Most people end up with no feedback on their form, generic diet plans, and nowhere to turn on a bad mental-health day.
 
-- 🚀 Node.js (version v18.16.1)
-- 🐍 Python (version 3.9.7)
+## ✨ The solution
 
-### Installation
+FitZen brings fitness, nutrition and mental well-being into one place. Your webcam becomes a personal trainer that counts reps and checks form, an LLM writes a meal plan for your goals, and a chatbot is available whenever you need to talk.
 
-1. 🔄 **Clone the repository:**
-   ```bash
-   git clone https://github.com/hargun13/health-fitness-tracker.git
-   ```
+## 🎬 Demo
 
-2. **Install dependencies:**
-   ```bash
-   cd fitzen
-   npm install
-   ```
+<div align="center">
 
-3. 🏃‍♀ **Set up the backend:**
-   ```bash
-   cd fitzen-backend
-   pip install -r "fitzen-requirements.txt"
-   ```
+<a href="https://youtu.be/HgBd2bfBc9U">
+  <img src="https://img.youtube.com/vi/HgBd2bfBc9U/hqdefault.jpg" alt="Watch the FitZen walkthrough on YouTube" width="480">
+</a>
 
-4. 🚀 **Start the backend server:**
-   ```bash
-   run python files seperately
-   ```
+▶️ **[Watch the walkthrough](https://youtu.be/HgBd2bfBc9U)** · 📑 **[Pitch deck](BroCode_AuraHackfest.pdf)**
 
-5. 📱 **Set up the mobile app:**
-   ```bash
-   different github
-   ```
+</div>
 
-6. 🚀 **Run the mobile app:**
-   ```bash
-   //different github
-   ```
+## 🚀 Features
 
-7. 🌐 **Visit http://localhost:3000** in your web browser to access the Health and Fitness Tracker application.
+| | Feature | What it does |
+|---|---|---|
+| 🏋️ | **AI exercise buddy** | Counts push-ups, bicep curls and shoulder presses in real time from your webcam, using pose estimation |
+| 🧘 | **Yoga pose detection** | Gives live feedback on your yoga poses in the browser |
+| 🍏 | **AI meal plans** | Generates a diet plan for your goals and preferences with an LLM (Mixtral 8x7B) |
+| 🧠 | **Mental health chatbot** | Intent-based chatbot that offers support and guidance |
+| 📊 | **Dashboard** | Tracks your progress with charts and KPIs |
+| 🎉 | **Rewards** | Keeps you motivated with milestones and rewards |
+| 👥 | **Community and blog** | Posts, events, news and fitness jobs |
 
-## Usage
+## ⚙️ How it works
 
-1. **AI Exercise Buddy:**
-   - Navigate to the "Exercise" section.
-   - Select your workout preferences.
-   - Follow the virtual trainer's guidance.
+```mermaid
+flowchart LR
+    U[👤 User] --> FE[React app]
+    FE -->|webcam stream| PD[🏋️ Pose detection<br/>OpenCV + MediaPipe]
+    FE -->|/generate| API[⚙️ Combined Flask API]
+    FE -->|/get| API
+    API --> MP[🍏 Mixtral 8x7B<br/>Hugging Face]
+    API --> CB[🧠 Keras intent model]
+    FE --> AU[🔐 Firebase Auth]
+```
 
-2. **Yoga Pose Detection:**
-   - Access the "Yoga" section.
-   - Follow the on-screen instructions for real-time feedback on your yoga poses.
+- **Pose detection:** MediaPipe finds body landmarks in each frame, the angle at the elbow or shoulder decides whether you are "up" or "down", and each full cycle counts as a rep.
+- **Combined API (`fitzen-backend/app.py`):** one Flask server handles both the chatbot (`/get`) and meal plans (`/generate`), so the frontend talks to a single backend.
+- **Meal plans:** the user's goals become a prompt for Mixtral 8x7B on the Hugging Face Inference API.
+- **Chatbot:** a small neural network trained on intents classifies each message and picks a matching response.
 
-3. **Mental Health Chatbot:**
-   - Click on the "Chat" feature.
-   - Engage in natural language conversations for personalized mental health support.
+## 🛠️ Tech stack
 
-4. **Diet and Workout Plans:**
-   - Head to the "Plans" section.
-   - Generate personalized diet and workout plans based on your goals.
+| Layer | Technology |
+|---|---|
+| Frontend | React, Tailwind CSS, Material UI, Redux Toolkit, Chart.js, Nivo |
+| In-browser AI | TensorFlow.js, PoseNet, MediaPipe Tasks |
+| Backend | Python, Flask, Flask-SocketIO |
+| Computer vision | OpenCV, MediaPipe |
+| AI models | Mixtral 8x7B (Hugging Face), Keras intent classifier |
+| Auth | Firebase Authentication |
 
-5. **Dashboard and Rewards:**
-   - Explore the "Dashboard" to track your progress.
-   - Earn rewards for achieving fitness milestones.
+## 📁 Project structure
 
-6. **Food Scanner and Nutrient Information:**
-   - Use the mobile app's food scanner to get instant nutritional information.
+```
+aura_hackfest_fitzen_bro-code/
+├── src/                          # React frontend
+│   ├── Landing/                  # Landing page
+│   ├── Login_Signup/             # Authentication
+│   ├── Main/                     # Dashboard, exercise, meal plan, mental health, rewards, profile
+│   ├── Community/                # Community feed
+│   └── Blog/                     # News, events and jobs
+├── public/
+├── fitzen-backend/
+│   ├── app.py                    # Combined API: chatbot (/get) + meal plans (/generate)
+│   ├── aimealplan.py             # Standalone meal-plan API
+│   ├── pose_detection/           # Rep counters for push-ups, curls and shoulder presses
+│   ├── chatbot/                  # Chatbot model, intents and standalone API
+│   ├── templates/                # Pages for the rep-counter video feeds
+│   └── fitzen-requirements.txt
+└── BroCode_AuraHackfest.pdf      # Pitch deck
+```
 
-7. **Live Therapy Sessions:**
-   - Join scheduled live therapy sessions in the "Therapy" section.
+## 🏃 Getting started
 
+**Prerequisites:** Node.js 18+, Python 3.9+, a webcam, a Firebase project and a Hugging Face token.
 
-## License
+**1. Frontend**
 
-This project is licensed under the [MIT License](LICENSE).
+```bash
+npm install
+npm start
+```
 
+Opens at `http://localhost:3000`.
+
+**2. Backend**
+
+```bash
+cd fitzen-backend
+pip install -r fitzen-requirements.txt
+python app.py
+```
+
+Before running:
+
+- Set your Hugging Face token in `app.py` (better: read it from an environment variable).
+- `app.py` loads the chatbot model with absolute Windows paths from the original machine. Change them to `chatbot/intents.json`, `chatbot/texts.pkl`, `chatbot/labels.pkl` and `chatbot/model.h5`.
+
+Rep counters run separately, for example:
+
+```bash
+cd fitzen-backend/pose_detection && python bicep_curl.py
+```
+
+## 👥 Team BroCode
+
+Built at Aura Hackfest. Original code by [hargun13](https://github.com/hargun13) and team BroCode.
+
+---
+
+<div align="center">
+
+Made with 💙 by team BroCode
+
+</div>
